@@ -1,6 +1,5 @@
 package com.complaint5.academic_events.models;
 
-//import lombok.AllArgsConstructor;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -40,7 +39,7 @@ public class Usuario {
     @Column(length = 64, nullable = false)
     @NotBlank
     @Size(min = 8, max = 64)
-    @JsonProperty(access = JsonProperty.Access.READ_WRITE)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String senha;
 
     @Column(updatable = false, nullable = false)
@@ -63,22 +62,22 @@ public class Usuario {
     private String email;
 
     @OneToOne
-    @JoinColumn(nullable = false, unique = true)
+    @JoinColumn(nullable = false, unique = true, name = "fk_telefone")
     @NotBlank
     private Telefone telefone;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = false, name = "fk_cadastro")
     @NotBlank
     private Cadastro cadastro;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = false, name = "fk_instituicao")
     @NotBlank
     private Instituicao instituicao;
 
     @OneToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = false, name = "fk_endereco")
     @NotBlank
     private Endereco endereco;
 }

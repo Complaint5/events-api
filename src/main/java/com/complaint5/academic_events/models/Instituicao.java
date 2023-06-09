@@ -39,7 +39,7 @@ public class Instituicao {
     private String sigla;
 
     @OneToOne
-    @JoinColumn(unique = true, nullable = false)
+    @JoinColumn(unique = true, nullable = false, name = "fk_endereco")
     @NotBlank
     private Endereco endereco;
 }
