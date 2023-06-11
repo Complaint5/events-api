@@ -46,9 +46,9 @@ public class InstituicaoService {
     
     @Transactional
     public void delete(UUID cod_instituicao){
-        this.findById(cod_instituicao);
+        Instituicao instituicao = this.findById(cod_instituicao);
         try {
-            this.instituicaoRepository.deleteById(cod_instituicao);
+            this.instituicaoRepository.delete(instituicao);
         } catch (Exception e) {
             throw new RuntimeException("Não é possivel excluir pois à entidades relacionadas!");
         }

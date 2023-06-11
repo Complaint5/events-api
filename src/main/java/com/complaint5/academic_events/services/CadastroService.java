@@ -43,9 +43,9 @@ public class CadastroService {
 
     @Transactional
     public void delete(UUID cod_cadastro) {/////////////////
-        this.findById(cod_cadastro);
+        Cadastro cadastro = this.findById(cod_cadastro);
         try {
-            this.cadastroRepository.deleteById(cod_cadastro);
+            this.cadastroRepository.delete(cadastro);
         } catch (Exception e) {
             throw new RuntimeException("Não é possivel excluir pois à entidades relacionadas!");
         }

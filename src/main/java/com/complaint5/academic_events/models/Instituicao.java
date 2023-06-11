@@ -22,19 +22,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Instituicao {
 
+    public interface CreateInstituicao{}
+    public interface UpdateInstituicao{}
+    
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(unique = true, updatable = false, nullable = false)
     private UUID cod_instituicao;
 
     @Column(length = 258, unique = true, nullable = false)
-    @NotBlank
-    @Size(min = 1, max = 258)
+    @NotBlank(groups = {CreateInstituicao.class, UpdateInstituicao.class})
+    @Size(groups = {CreateInstituicao.class, UpdateInstituicao.class}, min = 1, max = 258)
     private String nome;
 
     @Column(length = 32, unique = true, nullable = false)
-    @NotBlank
-    @Size(min = 1, max = 32)
+    @NotBlank(groups = {CreateInstituicao.class, UpdateInstituicao.class})
+    @Size(groups = {CreateInstituicao.class, UpdateInstituicao.class}, min = 1, max = 32)
     private String sigla;
 
     //@OneToOne

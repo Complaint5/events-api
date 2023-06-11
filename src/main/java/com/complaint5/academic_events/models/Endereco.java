@@ -21,42 +21,44 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Endereco {
-
+    
+    public interface CreateEndereco{}
+    public interface UpdateEndereco{}
+    
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(unique = true, updatable = false, nullable = false)
     private UUID cod_endereco;
 
     @Column(length = 258, nullable = false)
-    @NotBlank
-    @Size(min = 1, max = 258)
+    @NotBlank(groups = {CreateEndereco.class, UpdateEndereco.class})
+    @Size(groups = {CreateEndereco.class, UpdateEndereco.class}, min = 1, max = 258)
     private String pais;
 
     @Column(length = 258, nullable = false)
-    @NotBlank
-    @Size(min = 1, max = 258)
+    @NotBlank(groups = {CreateEndereco.class, UpdateEndereco.class})
+    @Size(groups = {CreateEndereco.class, UpdateEndereco.class}, min = 1, max = 258)
     private String estado;
 
     @Column(length = 258, nullable = false)
-    @NotBlank
-    @Size(min = 1, max = 258)
+    @NotBlank(groups = {CreateEndereco.class, UpdateEndereco.class})
+    @Size(groups = {CreateEndereco.class, UpdateEndereco.class}, min = 1, max = 258)
     private String cidade;
 
     @Column(length = 258, nullable = false)
-    @NotBlank
-    @Size(min = 1, max = 258)
+    @NotBlank(groups = {CreateEndereco.class, UpdateEndereco.class})
+    @Size(groups = {CreateEndereco.class, UpdateEndereco.class}, min = 1, max = 258)
     private String bairro;
 
     @Column(length = 258, nullable = false)
-    @NotBlank
-    @Size(min = 1, max = 258)
+    @NotBlank(groups = {CreateEndereco.class, UpdateEndereco.class})
+    @Size(groups = {CreateEndereco.class, UpdateEndereco.class}, min = 1, max = 258)
     private String rua;
 
     @Column(nullable = false)
     private Integer numero;
 
     @Column(nullable = false)
-    //@NotBlanklength = 258, length = 258, @Size(min = 1, max = 258)@Size(min = 1, max = 258)@NotBlank
     private Integer cep;
 
     @Column()

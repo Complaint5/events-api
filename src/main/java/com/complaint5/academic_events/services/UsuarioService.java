@@ -1,5 +1,7 @@
 package com.complaint5.academic_events.services;
 
+import com.complaint5.academic_events.models.Cadastro;
+import com.complaint5.academic_events.models.Instituicao;
 import com.complaint5.academic_events.models.Usuario;
 import com.complaint5.academic_events.repositories.UsuarioRepository;
 import java.util.List;
@@ -14,6 +16,10 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private CadastroService cadastroService;
+    @Autowired
+    private InstituicaoService instituicaoService;
 
     public Usuario findById(UUID cod_usuario) {
         Optional<Usuario> usuario = this.usuarioRepository.findById(cod_usuario);
@@ -30,11 +36,13 @@ public class UsuarioService {
 
     @Transactional
     public Usuario create(Usuario usuario) {
+        Cadastro cadastro = cadastroService.findById(usuario.getCadastro().getCod_cadastro());
+        Instituicao instituicao = instituicaoService.findById(usuario.getInstituicao().getCod_instituicao());
         usuario.setCod_usuario(null);
         usuario.getTelefone().setCod_telefone(null);
-        usuario.getCadastro().setCod_cadastro(null);
-        usuario.getInstituicao().setCod_instituicao(null);
         usuario.getEndereco().setCod_endereco(null);
+        usuario.setCadastro(cadastro);
+        usuario.setInstituicao(instituicao);
         return this.usuarioRepository.save(usuario);
     }
 
@@ -56,9 +64,9 @@ public class UsuarioService {
 
     @Transactional
     public void delete(UUID cod_usuario) {/////////////////
-        this.findById(cod_usuario);
+        Usuario usuario = this.findById(cod_usuario);
         try {
-            this.usuarioRepository.deleteById(cod_usuario);
+            this.usuarioRepository.delete(usuario);
         } catch (Exception e) {
             throw new RuntimeException("Não é possivel excluir pois à entidades relacionadas!");
         }

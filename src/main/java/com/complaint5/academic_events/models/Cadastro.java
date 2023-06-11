@@ -21,6 +21,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Cadastro {
+    
+    public interface CreateCadastro{}
+    public interface UpdateCadastro{}
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -28,8 +31,8 @@ public class Cadastro {
     private UUID cod_cadastro;
 
     @Column(length = 100, unique = true, nullable = false)
-    @NotBlank
-    @Size(min = 1, max = 100)
+    @NotBlank(groups = {CreateCadastro.class, UpdateCadastro.class})
+    @Size(groups = {CreateCadastro.class, UpdateCadastro.class}, min = 1, max = 100)
     private String tipo_cadastro;
 
     @OneToMany(mappedBy = "cadastro")

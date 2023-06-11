@@ -26,19 +26,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Usuario {
 
+    public interface CreateUsuario{}
+    public interface UpdateUsuario{}
+    
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(unique = true, updatable = false, nullable = false)
     private UUID cod_usuario;
 
     @Column(length = 128, nullable = false)
-    @NotBlank
-    @Size(min = 2, max = 128)
+    @NotBlank(groups = {CreateUsuario.class, UpdateUsuario.class})
+    @Size(groups = {CreateUsuario.class, UpdateUsuario.class}, min = 2, max = 128)
     private String nome;
 
     @Column(length = 64, nullable = false)
-    @NotBlank
-    @Size(min = 8, max = 64)
+    @NotBlank(groups = {CreateUsuario.class, UpdateUsuario.class})
+    @Size(groups = {CreateUsuario.class, UpdateUsuario.class}, min = 8, max = 64)
     //@JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String senha;
 
@@ -46,18 +49,18 @@ public class Usuario {
     private LocalDate data_de_nascimento;
 
     @Column(length = 11, updatable = false, nullable = false, unique = true)
-    @NotBlank
-    @Size(min = 11, max = 11)
+    @NotBlank(groups = {CreateUsuario.class})
+    @Size(groups = {CreateUsuario.class}, min = 11, max = 11)
     private String cpf;
 
     @Column(length = 9, nullable = false)
-    @NotBlank
-    @Size(min = 1, max = 9)
+    @NotBlank(groups = {CreateUsuario.class, UpdateUsuario.class})
+    @Size(groups = {CreateUsuario.class, UpdateUsuario.class}, min = 1, max = 9)
     private String genero;
 
     @Column(length = 100, nullable = false, unique = true)
-    @NotBlank
-    @Size(min = 5, max = 100)
+    @NotBlank(groups = {CreateUsuario.class, UpdateUsuario.class})
+    @Size(groups = {CreateUsuario.class, UpdateUsuario.class}, min = 5, max = 100)
     private String email;
 
     @OneToOne(cascade = CascadeType.ALL)
