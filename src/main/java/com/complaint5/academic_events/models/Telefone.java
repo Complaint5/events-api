@@ -1,5 +1,6 @@
 package com.complaint5.academic_events.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,5 +34,6 @@ public class Telefone {
 
     @OneToOne(mappedBy = "telefone")
     @JoinColumn(unique = true, nullable = false)
+    @JsonIgnore
     private Usuario usuario;
 }

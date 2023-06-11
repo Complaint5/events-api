@@ -40,15 +40,17 @@ public class CadastroController {
 
     @PostMapping("/")
     @Validated(CreateCadastro.class)
-    public ResponseEntity<Cadastro> create(@Valid @RequestBody Cadastro cadastro) {
-        return new ResponseEntity(cadastroService.create(cadastro), HttpStatus.CREATED);
+    public ResponseEntity<Void> create(@Valid @RequestBody Cadastro cadastro) {
+        cadastroService.create(cadastro);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @PutMapping("/{cod_cadastro}")
     @Validated(UpdateCadastro.class)
-    public ResponseEntity<Cadastro> update(@Valid @RequestBody Cadastro cadastro, @PathVariable UUID cod_cadastro) {
+    public ResponseEntity<Void> update(@Valid @RequestBody Cadastro cadastro, @PathVariable UUID cod_cadastro) {
         cadastro.setCod_cadastro(cod_cadastro);
-        return new ResponseEntity(cadastroService.update(cadastro), HttpStatus.OK);
+        cadastroService.update(cadastro);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @DeleteMapping("/{cod_cadastro}")

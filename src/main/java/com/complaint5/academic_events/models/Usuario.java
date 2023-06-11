@@ -1,5 +1,6 @@
 package com.complaint5.academic_events.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -42,7 +43,7 @@ public class Usuario {
     @Column(length = 64, nullable = false)
     @NotBlank(groups = {CreateUsuario.class, UpdateUsuario.class})
     @Size(groups = {CreateUsuario.class, UpdateUsuario.class}, min = 8, max = 64)
-    //@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String senha;
 
     @Column(updatable = false, nullable = false)

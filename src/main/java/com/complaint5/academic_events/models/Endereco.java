@@ -1,5 +1,6 @@
 package com.complaint5.academic_events.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -65,5 +66,6 @@ public class Endereco {
     private String complemento;
 
     @OneToMany(mappedBy = "endereco")
+    @JsonIgnore
     private List<Usuario> usuarios;
 }

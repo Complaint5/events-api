@@ -10,3 +10,4 @@ public class AcademicEventsApplication {
         SpringApplication.run(AcademicEventsApplication.class, args);
     }
 }
+//////////////// CASCADE NOS OBJETOS
