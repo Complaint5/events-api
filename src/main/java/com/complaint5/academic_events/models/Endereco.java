@@ -61,7 +61,7 @@ public class Endereco {
 
     @Column()
     private String complemento;
-    
+
     @OneToMany(mappedBy = "endereco")
     private List<Usuario> usuarios;
 }

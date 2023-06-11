@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -32,7 +31,7 @@ public class Cadastro {
     @NotBlank
     @Size(min = 1, max = 100)
     private String tipo_cadastro;
-    
+
     @OneToMany(mappedBy = "cadastro")
     private List<Usuario> usuarios;
 }

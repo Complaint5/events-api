@@ -37,7 +37,8 @@ public class Usuario {
     private String nome;
 
     @Column(length = 64, nullable = false)
-    //@Size(min = 8, max = 64)
+    @NotBlank
+    @Size(min = 8, max = 64)
     //@JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String senha;
 
@@ -60,18 +61,18 @@ public class Usuario {
     private String email;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(nullable = false, unique = true)
+    @JoinColumn(nullable = false, unique = true, name = "telefone_cod")
     private Telefone telefone;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = false, name = "cadastro_cod")
     private Cadastro cadastro;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = false, name = "instituicao_cod")
     private Instituicao instituicao;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(nullable = false, unique = true)
+    @JoinColumn(nullable = false, unique = true, name = "endereco_cod")
     private Endereco endereco;
 }

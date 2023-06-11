@@ -8,7 +8,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,7 +30,7 @@ public class Telefone {
 
     @Column(unique = true)
     private Integer telefone_fixo;
-    
+
     @OneToOne(mappedBy = "telefone")
     @JoinColumn(unique = true, nullable = false)
     private Usuario usuario;
