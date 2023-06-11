@@ -6,10 +6,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,7 +27,6 @@ public class Instituicao {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(unique = true, updatable = false, nullable = false)
-    @NotBlank
     private UUID cod_instituicao;
 
     @Column(length = 258, unique = true, nullable = false)
@@ -38,8 +39,11 @@ public class Instituicao {
     @Size(min = 1, max = 32)
     private String sigla;
 
-    @OneToOne
-    @JoinColumn(unique = true, nullable = false, name = "fk_endereco")
-    @NotBlank
-    private Endereco endereco;
+    //@OneToOne
+    //@JoinColumn(unique = true, nullable = false)
+    //@NotBlank
+    //private Endereco endereco;
+    
+    @OneToMany(mappedBy = "instituicao")
+    private List<Usuario> usuarios;
 }

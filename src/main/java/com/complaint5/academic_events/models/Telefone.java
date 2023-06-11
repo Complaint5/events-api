@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import java.util.UUID;
@@ -22,13 +24,15 @@ public class Telefone {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(unique = true, updatable = false, nullable = false)
-    @NotBlank
     private UUID cod_telefone;
 
     @Column(unique = true, nullable = false)
-    @NotBlank
     private Integer telefone_celular;
 
     @Column(unique = true)
     private Integer telefone_fixo;
+    
+    @OneToOne(mappedBy = "telefone")
+    @JoinColumn(unique = true, nullable = false)
+    private Usuario usuario;
 }

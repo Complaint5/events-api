@@ -5,9 +5,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +25,6 @@ public class Endereco {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(unique = true, updatable = false, nullable = false)
-    @NotBlank
     private UUID cod_endereco;
 
     @Column(length = 258, nullable = false)
@@ -51,16 +52,16 @@ public class Endereco {
     @Size(min = 1, max = 258)
     private String rua;
 
-    @Column(length = 258, nullable = false)
-    @NotBlank
-    @Size(min = 1, max = 258)
+    @Column(nullable = false)
     private Integer numero;
 
-    @Column(length = 258, nullable = false)
-    @NotBlank
-    @Size(min = 1, max = 258)
+    @Column(nullable = false)
+    //@NotBlanklength = 258, length = 258, @Size(min = 1, max = 258)@Size(min = 1, max = 258)@NotBlank
     private Integer cep;
 
     @Column()
     private String complemento;
+    
+    @OneToMany(mappedBy = "endereco")
+    private List<Usuario> usuarios;
 }

@@ -1,6 +1,7 @@
 package com.complaint5.academic_events.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,7 +29,6 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(unique = true, updatable = false, nullable = false)
-    @NotBlank
     private UUID cod_usuario;
 
     @Column(length = 128, nullable = false)
@@ -37,13 +37,11 @@ public class Usuario {
     private String nome;
 
     @Column(length = 64, nullable = false)
-    @NotBlank
-    @Size(min = 8, max = 64)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    //@Size(min = 8, max = 64)
+    //@JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String senha;
 
     @Column(updatable = false, nullable = false)
-    @NotBlank
     private LocalDate data_de_nascimento;
 
     @Column(length = 11, updatable = false, nullable = false, unique = true)
@@ -61,23 +59,19 @@ public class Usuario {
     @Size(min = 5, max = 100)
     private String email;
 
-    @OneToOne
-    @JoinColumn(nullable = false, unique = true, name = "fk_telefone")
-    @NotBlank
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(nullable = false, unique = true)
     private Telefone telefone;
 
-    @ManyToOne
-    @JoinColumn(nullable = false, name = "fk_cadastro")
-    @NotBlank
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(nullable = false)
     private Cadastro cadastro;
 
-    @ManyToOne
-    @JoinColumn(nullable = false, name = "fk_instituicao")
-    @NotBlank
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(nullable = false)
     private Instituicao instituicao;
 
-    @OneToOne
-    @JoinColumn(nullable = false, name = "fk_endereco")
-    @NotBlank
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(nullable = false, unique = true)
     private Endereco endereco;
 }
