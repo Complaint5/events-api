@@ -28,9 +28,9 @@ public class CadastroController {
     @Autowired
     private CadastroService cadastroService;
 
-    @GetMapping("/{cod_cadastro}")
-    public ResponseEntity<Cadastro> findById(@PathVariable UUID cod_cadastro) {
-        return new ResponseEntity(cadastroService.findById(cod_cadastro), HttpStatus.OK);
+    @GetMapping("/{id}")
+    public ResponseEntity<Cadastro> findById(@PathVariable UUID id) {
+        return new ResponseEntity(cadastroService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping("/")
@@ -45,17 +45,17 @@ public class CadastroController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @PutMapping("/{cod_cadastro}")
+    @PutMapping("/{id}")
     @Validated(UpdateCadastro.class)
-    public ResponseEntity<Void> update(@Valid @RequestBody Cadastro cadastro, @PathVariable UUID cod_cadastro) {
-        cadastro.setCod_cadastro(cod_cadastro);
+    public ResponseEntity<Void> update(@Valid @RequestBody Cadastro cadastro, @PathVariable UUID id) {
+        cadastro.setId(id);
         cadastroService.update(cadastro);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @DeleteMapping("/{cod_cadastro}")
-    public ResponseEntity<Void> delete(@PathVariable UUID cod_cadastro) {
-        cadastroService.delete(cod_cadastro);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+        cadastroService.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

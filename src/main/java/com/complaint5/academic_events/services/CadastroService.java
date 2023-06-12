@@ -30,13 +30,13 @@ public class CadastroService {
 
     @Transactional
     public Cadastro create(Cadastro cadastro) {
-        cadastro.setCod_cadastro(null);
+        cadastro.setId(null);
         return this.cadastroRepository.save(cadastro);
     }
 
     @Transactional
     public Cadastro update(Cadastro cadastro) {
-        Cadastro newCadastro = this.findById(cadastro.getCod_cadastro());
+        Cadastro newCadastro = this.findById(cadastro.getId());
         newCadastro.setTipo_cadastro(cadastro.getTipo_cadastro());
         return this.cadastroRepository.save(newCadastro);
     }

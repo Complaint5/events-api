@@ -22,14 +22,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Cadastro {
-    
-    public interface CreateCadastro{}
-    public interface UpdateCadastro{}
+
+    public interface CreateCadastro {
+    }
+
+    public interface UpdateCadastro {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(unique = true, updatable = false, nullable = false)
-    private UUID cod_cadastro;
+    private UUID id;
 
     @Column(length = 100, unique = true, nullable = false)
     @NotBlank(groups = {CreateCadastro.class, UpdateCadastro.class})

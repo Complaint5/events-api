@@ -30,22 +30,22 @@ public class InstituicaoService {
 
     @Transactional
     public Instituicao create(Instituicao instituicao) {
-        instituicao.setCod_instituicao(null);
+        instituicao.setId(null);
         //instituicao.getEndereco().setCod_endereco(null);
         return this.instituicaoRepository.save(instituicao);
     }
-    
+
     @Transactional
-    public Instituicao update(Instituicao instituicao){
-        Instituicao newInstituicao = this.findById(instituicao.getCod_instituicao());
+    public Instituicao update(Instituicao instituicao) {
+        Instituicao newInstituicao = this.findById(instituicao.getId());
         newInstituicao.setNome(instituicao.getNome());
         newInstituicao.setSigla(instituicao.getSigla());
         //newInstituicao.setEndereco(instituicao.getEndereco());
         return this.instituicaoRepository.save(newInstituicao);
     }
-    
+
     @Transactional
-    public void delete(UUID cod_instituicao){
+    public void delete(UUID cod_instituicao) {
         Instituicao instituicao = this.findById(cod_instituicao);
         try {
             this.instituicaoRepository.delete(instituicao);

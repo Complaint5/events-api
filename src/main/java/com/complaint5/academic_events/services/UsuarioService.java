@@ -33,14 +33,22 @@ public class UsuarioService {
     public List<Usuario> findAll() {
         return this.usuarioRepository.findAll();
     }
+ 
+    public List<Usuario> findByInstituicao_Id(UUID id) {
+        return this.usuarioRepository.findByInstituicao_Id(id);
+    }
+    
+    public List<Usuario> findByCadastro_Id(UUID id) {
+        return this.usuarioRepository.findByCadastro_Id(id);
+    }
 
     @Transactional
     public Usuario create(Usuario usuario) {
-        Cadastro cadastro = cadastroService.findById(usuario.getCadastro().getCod_cadastro());
-        Instituicao instituicao = instituicaoService.findById(usuario.getInstituicao().getCod_instituicao());
-        usuario.setCod_usuario(null);
-        usuario.getTelefone().setCod_telefone(null);
-        usuario.getEndereco().setCod_endereco(null);
+        Cadastro cadastro = cadastroService.findById(usuario.getCadastro().getId());
+        Instituicao instituicao = instituicaoService.findById(usuario.getInstituicao().getId());
+        usuario.setId(null);
+        usuario.getTelefone().setId(null);
+        usuario.getEndereco().setId(null);
         usuario.setCadastro(cadastro);
         usuario.setInstituicao(instituicao);
         return this.usuarioRepository.save(usuario);
@@ -48,7 +56,7 @@ public class UsuarioService {
 
     @Transactional
     public Usuario update(Usuario usuario) {
-        Usuario newUsuario = this.findById(usuario.getCod_usuario());
+        Usuario newUsuario = this.findById(usuario.getId());
         newUsuario.setNome(usuario.getNome());
         newUsuario.setSenha(usuario.getSenha());
         newUsuario.setData_de_nascimento(usuario.getData_de_nascimento());

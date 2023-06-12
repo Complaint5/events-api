@@ -20,11 +20,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Telefone {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(unique = true, updatable = false, nullable = false)
-    private UUID cod_telefone;
+    private UUID id;
 
     @Column(unique = true, nullable = false)
     private Integer telefone_celular;

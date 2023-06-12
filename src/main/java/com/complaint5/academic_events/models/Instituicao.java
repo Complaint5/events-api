@@ -23,13 +23,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Instituicao {
 
-    public interface CreateInstituicao{}
-    public interface UpdateInstituicao{}
-    
+    public interface CreateInstituicao {
+    }
+
+    public interface UpdateInstituicao {
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(unique = true, updatable = false, nullable = false)
-    private UUID cod_instituicao;
+    private UUID id;
 
     @Column(length = 258, unique = true, nullable = false)
     @NotBlank(groups = {CreateInstituicao.class, UpdateInstituicao.class})

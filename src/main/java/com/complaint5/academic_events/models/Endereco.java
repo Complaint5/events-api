@@ -22,14 +22,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Endereco {
-    
-    public interface CreateEndereco{}
-    public interface UpdateEndereco{}
-    
+
+    public interface CreateEndereco {
+    }
+
+    public interface UpdateEndereco {
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(unique = true, updatable = false, nullable = false)
-    private UUID cod_endereco;
+    private UUID id;
 
     @Column(length = 258, nullable = false)
     @NotBlank(groups = {CreateEndereco.class, UpdateEndereco.class})

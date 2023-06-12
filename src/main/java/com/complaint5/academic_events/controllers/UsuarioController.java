@@ -24,18 +24,28 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/usuario")
 @Validated
 public class UsuarioController {
-    
+
     @Autowired
     private UsuarioService usuarioService;
-    
-    @GetMapping("/{cod_usuario}")
-    public ResponseEntity<Usuario> findById(@PathVariable UUID cod_usuario) {
-        return new ResponseEntity(usuarioService.findById(cod_usuario), HttpStatus.OK);
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Usuario> findById(@PathVariable UUID id) {
+        return new ResponseEntity(usuarioService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping("/")
     public ResponseEntity<List<Usuario>> findAll() {
         return new ResponseEntity(usuarioService.findAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/instituicao/{id}")
+    public ResponseEntity<List<Usuario>> findByInstituicao_Id(@PathVariable UUID id) {
+        return new ResponseEntity(usuarioService.findByInstituicao_Id(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/cadastro/{id}")
+    public ResponseEntity<List<Usuario>> findByCadastro_Id(@PathVariable UUID id) {
+        return new ResponseEntity(usuarioService.findByCadastro_Id(id), HttpStatus.OK);
     }
 
     @PostMapping("/")
@@ -45,17 +55,17 @@ public class UsuarioController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @PutMapping("/{cod_usuario}")
+    @PutMapping("/{id}")
     @Validated(UpdateUsuario.class)
-    public ResponseEntity<Void> update(@Valid @RequestBody Usuario usuario, @PathVariable UUID cod_usuario) {
-        usuario.setCod_usuario(cod_usuario);
+    public ResponseEntity<Void> update(@Valid @RequestBody Usuario usuario, @PathVariable UUID id) {
+        usuario.setId(id);
         usuarioService.update(usuario);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @DeleteMapping("/{cod_usuario}")
-    public ResponseEntity<Void> delete(@PathVariable UUID cod_usuario) {
-        usuarioService.delete(cod_usuario);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+        usuarioService.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

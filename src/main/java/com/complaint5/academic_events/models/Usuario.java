@@ -1,6 +1,5 @@
 package com.complaint5.academic_events.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -27,13 +26,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Usuario {
 
-    public interface CreateUsuario{}
-    public interface UpdateUsuario{}
-    
+    public interface CreateUsuario {
+    }
+
+    public interface UpdateUsuario {
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(unique = true, updatable = false, nullable = false)
-    private UUID cod_usuario;
+    private UUID id;
 
     @Column(length = 128, nullable = false)
     @NotBlank(groups = {CreateUsuario.class, UpdateUsuario.class})
@@ -68,11 +70,11 @@ public class Usuario {
     @JoinColumn(nullable = false, unique = true, name = "telefone_cod")
     private Telefone telefone;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(nullable = false, name = "cadastro_cod")
     private Cadastro cadastro;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(nullable = false, name = "instituicao_cod")
     private Instituicao instituicao;
 
