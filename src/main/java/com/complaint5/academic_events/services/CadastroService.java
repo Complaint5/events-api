@@ -2,6 +2,8 @@ package com.complaint5.academic_events.services;
 
 import com.complaint5.academic_events.models.Cadastro;
 import com.complaint5.academic_events.repositories.CadastroRepository;
+import com.complaint5.academic_events.services.exceptions.DataBindingViolationException;
+import com.complaint5.academic_events.services.exceptions.ObjectNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -18,7 +20,7 @@ public class CadastroService {
     public Cadastro findById(UUID cod_cadastro) {
         Optional<Cadastro> cadastro = this.cadastroRepository.findById(cod_cadastro);
         return cadastro.orElseThrow(() -> {
-            return new RuntimeException(
+            return new ObjectNotFoundException(
                     "Cadastro não encontrado! Codigo: " + cod_cadastro + " Tipo: " + Cadastro.class.getName()
             );
         });
@@ -47,7 +49,7 @@ public class CadastroService {
         try {
             this.cadastroRepository.delete(cadastro);
         } catch (Exception e) {
-            throw new RuntimeException("Não é possivel excluir pois à entidades relacionadas!");
+            throw new DataBindingViolationException("Não é possivel excluir pois à entidades relacionadas!");
         }
     }
 }

@@ -3,6 +3,8 @@ package com.complaint5.academic_events.controllers;
 import com.complaint5.academic_events.models.Usuario;
 import com.complaint5.academic_events.models.Usuario.CreateUsuario;
 import com.complaint5.academic_events.models.Usuario.UpdateUsuario;
+import com.complaint5.academic_events.services.CadastroService;
+import com.complaint5.academic_events.services.InstituicaoService;
 import com.complaint5.academic_events.services.UsuarioService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -27,6 +29,10 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
+    @Autowired
+    private InstituicaoService instituicaoService;
+    @Autowired
+    private CadastroService cadastroService;
 
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> findById(@PathVariable UUID id) {
@@ -39,12 +45,14 @@ public class UsuarioController {
     }
 
     @GetMapping("/instituicao/{id}")
-    public ResponseEntity<List<Usuario>> findByInstituicao_Id(@PathVariable UUID id) {
+    public ResponseEntity<List<Usuario>> findByInstituicao(@PathVariable UUID id) {
+        this.instituicaoService.findById(id);
         return new ResponseEntity(usuarioService.findByInstituicao_Id(id), HttpStatus.OK);
     }
 
     @GetMapping("/cadastro/{id}")
-    public ResponseEntity<List<Usuario>> findByCadastro_Id(@PathVariable UUID id) {
+    public ResponseEntity<List<Usuario>> findByCadastro(@PathVariable UUID id) {
+        this.cadastroService.findById(id);
         return new ResponseEntity(usuarioService.findByCadastro_Id(id), HttpStatus.OK);
     }
 

@@ -4,6 +4,8 @@ import com.complaint5.academic_events.models.Cadastro;
 import com.complaint5.academic_events.models.Instituicao;
 import com.complaint5.academic_events.models.Usuario;
 import com.complaint5.academic_events.repositories.UsuarioRepository;
+import com.complaint5.academic_events.services.exceptions.DataBindingViolationException;
+import com.complaint5.academic_events.services.exceptions.ObjectNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,7 +26,7 @@ public class UsuarioService {
     public Usuario findById(UUID cod_usuario) {
         Optional<Usuario> usuario = this.usuarioRepository.findById(cod_usuario);
         return usuario.orElseThrow(() -> {
-            return new RuntimeException(
+            return new ObjectNotFoundException(
                     "Usuario não encontrado! Codigo: " + cod_usuario + " Tipo: " + Usuario.class.getName()
             );
         });
@@ -33,11 +35,11 @@ public class UsuarioService {
     public List<Usuario> findAll() {
         return this.usuarioRepository.findAll();
     }
- 
+
     public List<Usuario> findByInstituicao_Id(UUID id) {
         return this.usuarioRepository.findByInstituicao_Id(id);
     }
-    
+
     public List<Usuario> findByCadastro_Id(UUID id) {
         return this.usuarioRepository.findByCadastro_Id(id);
     }
@@ -76,7 +78,7 @@ public class UsuarioService {
         try {
             this.usuarioRepository.delete(usuario);
         } catch (Exception e) {
-            throw new RuntimeException("Não é possivel excluir pois à entidades relacionadas!");
+            throw new DataBindingViolationException("Não é possivel excluir pois à entidades relacionadas!");
         }
     }
 }

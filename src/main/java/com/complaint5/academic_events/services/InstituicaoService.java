@@ -2,6 +2,8 @@ package com.complaint5.academic_events.services;
 
 import com.complaint5.academic_events.models.Instituicao;
 import com.complaint5.academic_events.repositories.InstituicaoRepository;
+import com.complaint5.academic_events.services.exceptions.DataBindingViolationException;
+import com.complaint5.academic_events.services.exceptions.ObjectNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -18,7 +20,7 @@ public class InstituicaoService {
     public Instituicao findById(UUID cod_instituicao) {
         Optional<Instituicao> instituicao = this.instituicaoRepository.findById(cod_instituicao);
         return instituicao.orElseThrow(() -> {
-            return new RuntimeException(
+            return new ObjectNotFoundException(
                     "Instituição não encontrado! Codigo: " + cod_instituicao + " Tipo: " + Instituicao.class.getName()
             );
         });
@@ -50,7 +52,7 @@ public class InstituicaoService {
         try {
             this.instituicaoRepository.delete(instituicao);
         } catch (Exception e) {
-            throw new RuntimeException("Não é possivel excluir pois à entidades relacionadas!");
+            throw new DataBindingViolationException("Não é possivel excluir pois à entidades relacionadas!");
         }
     }
 }

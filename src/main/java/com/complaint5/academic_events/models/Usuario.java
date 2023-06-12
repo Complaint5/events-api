@@ -15,15 +15,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.UUID;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "usuario", schema = "events")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Usuario {
 
     public interface CreateUsuario {

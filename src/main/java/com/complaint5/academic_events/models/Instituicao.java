@@ -1,6 +1,6 @@
 package com.complaint5.academic_events.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,15 +12,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.util.List;
 import java.util.UUID;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "instituicao", schema = "events")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Instituicao {
 
     public interface CreateInstituicao {
@@ -49,6 +45,6 @@ public class Instituicao {
     //@NotBlank
     //private Endereco endereco;
     @OneToMany(mappedBy = "instituicao")
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Usuario> usuarios;
 }

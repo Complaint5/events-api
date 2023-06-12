@@ -1,6 +1,6 @@
 package com.complaint5.academic_events.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,15 +10,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.UUID;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "telefone", schema = "events")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Telefone {
 
     @Id
@@ -34,6 +30,6 @@ public class Telefone {
 
     @OneToOne(mappedBy = "telefone")
     @JoinColumn(unique = true, nullable = false)
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Usuario usuario;
 }
