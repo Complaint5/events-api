@@ -7,6 +7,7 @@ import com.complaint5.academic_events.services.CadastroService;
 import com.complaint5.academic_events.services.InstituicaoService;
 import com.complaint5.academic_events.services.UsuarioService;
 import jakarta.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping("/usuario")
@@ -36,31 +38,32 @@ public class UsuarioController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> findById(@PathVariable UUID id) {
-        return new ResponseEntity(usuarioService.findById(id), HttpStatus.OK);
+        return ResponseEntity.ok().body(usuarioService.findById(id));
     }
 
     @GetMapping("/")
     public ResponseEntity<List<Usuario>> findAll() {
-        return new ResponseEntity(usuarioService.findAll(), HttpStatus.OK);
+        return ResponseEntity.ok().body(usuarioService.findAll());
     }
 
     @GetMapping("/instituicao/{id}")
     public ResponseEntity<List<Usuario>> findByInstituicao(@PathVariable UUID id) {
         this.instituicaoService.findById(id);
-        return new ResponseEntity(usuarioService.findByInstituicao_Id(id), HttpStatus.OK);
+        return ResponseEntity.ok().body(usuarioService.findByInstituicao_Id(id));
     }
 
     @GetMapping("/cadastro/{id}")
     public ResponseEntity<List<Usuario>> findByCadastro(@PathVariable UUID id) {
         this.cadastroService.findById(id);
-        return new ResponseEntity(usuarioService.findByCadastro_Id(id), HttpStatus.OK);
+        return ResponseEntity.ok().body(usuarioService.findByCadastro_Id(id));
     }
 
     @PostMapping("/")
     @Validated(CreateUsuario.class)
     public ResponseEntity<Void> create(@Valid @RequestBody Usuario usuario) {
         usuarioService.create(usuario);
-        return new ResponseEntity(HttpStatus.CREATED);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(usuario.getId()).toUri();
+        return ResponseEntity.created(uri).build();
     }
 
     @PutMapping("/{id}")
@@ -68,12 +71,12 @@ public class UsuarioController {
     public ResponseEntity<Void> update(@Valid @RequestBody Usuario usuario, @PathVariable UUID id) {
         usuario.setId(id);
         usuarioService.update(usuario);
-        return new ResponseEntity(HttpStatus.OK);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         usuarioService.delete(id);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 }

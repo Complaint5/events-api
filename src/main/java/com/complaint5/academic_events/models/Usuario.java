@@ -12,6 +12,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.UUID;
@@ -45,6 +46,7 @@ public class Usuario {
     private String senha;
 
     @Column(updatable = false, nullable = false)
+    @NotNull(groups = {CreateUsuario.class, UpdateUsuario.class})
     private LocalDate data_de_nascimento;
 
     @Column(length = 11, updatable = false, nullable = false, unique = true)
@@ -64,17 +66,21 @@ public class Usuario {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(nullable = false, unique = true, name = "telefone_cod")
+    @NotNull(groups = {CreateUsuario.class, UpdateUsuario.class})
     private Telefone telefone;
 
     @ManyToOne()
     @JoinColumn(nullable = false, name = "cadastro_cod")
+    @NotNull(groups = {CreateUsuario.class, UpdateUsuario.class})
     private Cadastro cadastro;
 
     @ManyToOne()
     @JoinColumn(nullable = false, name = "instituicao_cod")
+    @NotNull(groups = {CreateUsuario.class, UpdateUsuario.class})
     private Instituicao instituicao;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(nullable = false, unique = true, name = "endereco_cod")
+    @NotNull(groups = {CreateUsuario.class, UpdateUsuario.class})
     private Endereco endereco;
 }
