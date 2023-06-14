@@ -9,7 +9,6 @@ import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,12 +34,12 @@ public class InstituicaoController {
         return ResponseEntity.ok().body(instituicaoService.findById(id));
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<Instituicao>> findAll() {
         return ResponseEntity.ok().body(instituicaoService.findAll());
     }
 
-    @PostMapping("/")
+    @PostMapping
     @Validated(CreateInstituicao.class)
     public ResponseEntity<Void> create(@Valid @RequestBody Instituicao instituicao) {
         instituicaoService.create(instituicao);

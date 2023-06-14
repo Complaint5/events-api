@@ -11,7 +11,6 @@ import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,7 +40,7 @@ public class UsuarioController {
         return ResponseEntity.ok().body(usuarioService.findById(id));
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<Usuario>> findAll() {
         return ResponseEntity.ok().body(usuarioService.findAll());
     }
@@ -58,7 +57,7 @@ public class UsuarioController {
         return ResponseEntity.ok().body(usuarioService.findByCadastro_Id(id));
     }
 
-    @PostMapping("/")
+    @PostMapping
     @Validated(CreateUsuario.class)
     public ResponseEntity<Void> create(@Valid @RequestBody Usuario usuario) {
         usuarioService.create(usuario);

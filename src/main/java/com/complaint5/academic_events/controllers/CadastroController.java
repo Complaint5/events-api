@@ -9,7 +9,6 @@ import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,12 +34,12 @@ public class CadastroController {
         return ResponseEntity.ok().body(cadastroService.findById(id));
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<Cadastro>> findAll() {
         return ResponseEntity.ok().body(cadastroService.findAll());
     }
 
-    @PostMapping("/")
+    @PostMapping
     @Validated(CreateCadastro.class)
     public ResponseEntity<Void> create(@Valid @RequestBody Cadastro cadastro) {
         cadastroService.create(cadastro);
