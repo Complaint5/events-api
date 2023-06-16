@@ -2,6 +2,7 @@ package com.complaint5.academic_events.services;
 
 import com.complaint5.academic_events.models.Cadastro;
 import com.complaint5.academic_events.models.Instituicao;
+import com.complaint5.academic_events.models.ProfileEnum;
 import com.complaint5.academic_events.models.Usuario;
 import com.complaint5.academic_events.repositories.UsuarioRepository;
 import com.complaint5.academic_events.services.exceptions.DataBindingViolationException;
@@ -9,7 +10,10 @@ import com.complaint5.academic_events.services.exceptions.ObjectNotFoundExceptio
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +26,8 @@ public class UsuarioService {
     private CadastroService cadastroService;
     @Autowired
     private InstituicaoService instituicaoService;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public Usuario findById(UUID cod_usuario) {
         Optional<Usuario> usuario = this.usuarioRepository.findById(cod_usuario);
@@ -53,6 +59,8 @@ public class UsuarioService {
         usuario.getEndereco().setId(null);
         usuario.setCadastro(cadastro);
         usuario.setInstituicao(instituicao);
+        usuario.setSenha(this.bCryptPasswordEncoder.encode(usuario.getSenha()));
+        usuario.setProfiles(Stream.of(ProfileEnum.USER.getCode()).collect(Collectors.toSet()));
         return this.usuarioRepository.save(usuario);
     }
 
@@ -60,7 +68,7 @@ public class UsuarioService {
     public Usuario update(Usuario usuario) {
         Usuario newUsuario = this.findById(usuario.getId());
         newUsuario.setNome(usuario.getNome());
-        newUsuario.setSenha(usuario.getSenha());
+        newUsuario.setSenha(this.bCryptPasswordEncoder.encode(usuario.getSenha()));
         newUsuario.setData_de_nascimento(usuario.getData_de_nascimento());
         newUsuario.setCpf(usuario.getCpf());
         newUsuario.setGenero(usuario.getGenero());
