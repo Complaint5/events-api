@@ -9,24 +9,24 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class UserSpringSecurity implements UserDetails{
+public class UserSpringSecurity implements UserDetails {
 
     private UUID id;
-    private String name;
+    private String email;
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserSpringSecurity(UUID id, String name, String password, Set<ProfileEnum> authorities) {
+    public UserSpringSecurity(UUID id, String email, String password, Set<ProfileEnum> authorities) {
         this.id = id;
-        this.name = name;
+        this.email = email;
         this.password = password;
         this.authorities = authorities.stream().map(x -> new SimpleGrantedAuthority(x.getDescription())).collect(Collectors.toList());
     }
-    
-    public boolean hasRole(ProfileEnum profileEnum){
+
+    public boolean hasRole(ProfileEnum profileEnum) {
         return getAuthorities().contains(new SimpleGrantedAuthority(profileEnum.getDescription()));
     }
-    
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.authorities;
@@ -39,7 +39,7 @@ public class UserSpringSecurity implements UserDetails{
 
     @Override
     public String getUsername() {
-        return this.name;
+        return this.email;
     }
 
     @Override
@@ -61,5 +61,5 @@ public class UserSpringSecurity implements UserDetails{
     public boolean isEnabled() {
         return true;
     }
-    
+
 }
