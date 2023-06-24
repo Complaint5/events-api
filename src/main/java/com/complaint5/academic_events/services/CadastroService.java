@@ -44,7 +44,7 @@ public class CadastroService {
     }
 
     @Transactional
-    public void delete(UUID cod_cadastro) {/////////////////
+    public void delete(UUID cod_cadastro) {
         Cadastro cadastro = this.findById(cod_cadastro);
         try {
             this.cadastroRepository.delete(cadastro);

@@ -1,11 +1,14 @@
 package com.complaint5.academic_events.controllers;
 
+import com.complaint5.academic_events.models.AuthenticationResponse;
+import com.complaint5.academic_events.models.AuthenticationRequest;
 import com.complaint5.academic_events.models.Usuario;
 import com.complaint5.academic_events.models.Usuario.CreateUsuario;
 import com.complaint5.academic_events.models.Usuario.UpdateUsuario;
 import com.complaint5.academic_events.services.CadastroService;
 import com.complaint5.academic_events.services.InstituicaoService;
 import com.complaint5.academic_events.services.UsuarioService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -34,6 +37,8 @@ public class UsuarioController {
     private InstituicaoService instituicaoService;
     @Autowired
     private CadastroService cadastroService;
+    @Autowired
+    private HttpServletRequest request;
 
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> findById(@PathVariable UUID id) {
@@ -42,6 +47,8 @@ public class UsuarioController {
 
     @GetMapping
     public ResponseEntity<List<Usuario>> findAll() {
+        System.out.println(request.getLocalAddr());
+        System.out.println(request.getRemoteAddr());
         return ResponseEntity.ok().body(usuarioService.findAll());
     }
 
@@ -55,6 +62,11 @@ public class UsuarioController {
     public ResponseEntity<List<Usuario>> findByCadastro(@PathVariable UUID id) {
         this.cadastroService.findById(id);
         return ResponseEntity.ok().body(usuarioService.findByCadastro_Id(id));
+    }
+    
+    @PostMapping("/login")
+    public ResponseEntity<AuthenticationResponse> login (@RequestBody AuthenticationRequest loginRequest){
+        return ResponseEntity.ok(usuarioService.autenticar(loginRequest));
     }
 
     @PostMapping

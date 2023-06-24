@@ -1,19 +1,22 @@
 package com.complaint5.academic_events.services;
 
+import com.complaint5.academic_events.models.AuthenticationRequest;
+import com.complaint5.academic_events.models.AuthenticationResponse;
 import com.complaint5.academic_events.models.Cadastro;
 import com.complaint5.academic_events.models.Instituicao;
-import com.complaint5.academic_events.models.ProfileEnum;
 import com.complaint5.academic_events.models.Usuario;
 import com.complaint5.academic_events.repositories.UsuarioRepository;
+import com.complaint5.academic_events.security.JwtService;
+import com.complaint5.academic_events.security.Role;
 import com.complaint5.academic_events.services.exceptions.DataBindingViolationException;
 import com.complaint5.academic_events.services.exceptions.ObjectNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +30,11 @@ public class UsuarioService {
     @Autowired
     private InstituicaoService instituicaoService;
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private PasswordEncoder PasswordEncoder;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private JwtService jwtService;
 
     public Usuario findById(UUID cod_usuario) {
         Optional<Usuario> usuario = this.usuarioRepository.findById(cod_usuario);
@@ -59,16 +66,27 @@ public class UsuarioService {
         usuario.getEndereco().setId(null);
         usuario.setCadastro(cadastro);
         usuario.setInstituicao(instituicao);
-        usuario.setSenha(this.bCryptPasswordEncoder.encode(usuario.getSenha()));
-        usuario.setProfiles(Stream.of(ProfileEnum.USER.getCode()).collect(Collectors.toSet()));
+        usuario.setSenha(this.PasswordEncoder.encode(usuario.getSenha()));
+        usuario.setRole(Role.USER);
         return this.usuarioRepository.save(usuario);
+    }
+    
+    public AuthenticationResponse autenticar(AuthenticationRequest authenticationRequest){
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        authenticationRequest.getEmail(), authenticationRequest.getSenha())
+                );
+        var user = usuarioRepository.findByEmail(authenticationRequest.getEmail())
+                .orElseThrow();
+        var jwtToken = jwtService.generateToken(user);
+        return new AuthenticationResponse(jwtToken);
     }
 
     @Transactional
     public Usuario update(Usuario usuario) {
         Usuario newUsuario = this.findById(usuario.getId());
         newUsuario.setNome(usuario.getNome());
-        newUsuario.setSenha(this.bCryptPasswordEncoder.encode(usuario.getSenha()));
+        newUsuario.setSenha(this.PasswordEncoder.encode(usuario.getSenha()));
         newUsuario.setData_de_nascimento(usuario.getData_de_nascimento());
         newUsuario.setCpf(usuario.getCpf());
         newUsuario.setGenero(usuario.getGenero());
@@ -81,7 +99,7 @@ public class UsuarioService {
     }
 
     @Transactional
-    public void delete(UUID cod_usuario) {/////////////////
+    public void delete(UUID cod_usuario) {
         Usuario usuario = this.findById(cod_usuario);
         try {
             this.usuarioRepository.delete(usuario);

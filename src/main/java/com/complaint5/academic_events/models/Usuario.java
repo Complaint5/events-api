@@ -1,12 +1,11 @@
 package com.complaint5.academic_events.models;
 
+import com.complaint5.academic_events.security.Role;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,16 +17,24 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "usuario", schema = "events")
 @Data
-public class Usuario {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Usuario implements UserDetails {
 
     public interface CreateUsuario {
     }
@@ -90,17 +97,42 @@ public class Usuario {
     @NotNull(groups = {CreateUsuario.class, UpdateUsuario.class})
     private Endereco endereco;
     
-    @Column(name = "profile", nullable = false)
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "usuario_profile", schema = "events")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Set<Integer> profiles = new HashSet();
+    @Enumerated
+    private Role role;
     
-    public Set<ProfileEnum> getProfiles() {
-        return this.profiles.stream().map(x -> ProfileEnum.toEnum(x)).collect(Collectors.toSet());
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(this.role.name()));
     }
 
-    public void addProfile(ProfileEnum profileEnum) {
-        this.profiles.add(profileEnum.getCode());
+    @Override
+    public String getPassword() {
+        return this.senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

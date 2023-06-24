@@ -33,7 +33,6 @@ public class InstituicaoService {
     @Transactional
     public Instituicao create(Instituicao instituicao) {
         instituicao.setId(null);
-        //instituicao.getEndereco().setCod_endereco(null);
         return this.instituicaoRepository.save(instituicao);
     }
 
@@ -42,7 +41,6 @@ public class InstituicaoService {
         Instituicao newInstituicao = this.findById(instituicao.getId());
         newInstituicao.setNome(instituicao.getNome());
         newInstituicao.setSigla(instituicao.getSigla());
-        //newInstituicao.setEndereco(instituicao.getEndereco());
         return this.instituicaoRepository.save(newInstituicao);
     }
 

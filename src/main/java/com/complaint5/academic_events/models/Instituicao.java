@@ -39,11 +39,7 @@ public class Instituicao {
     @NotBlank(groups = {CreateInstituicao.class, UpdateInstituicao.class})
     @Size(groups = {CreateInstituicao.class, UpdateInstituicao.class}, min = 1, max = 32)
     private String sigla;
-
-    //@OneToOne
-    //@JoinColumn(unique = true, nullable = false)
-    //@NotBlank
-    //private Endereco endereco;
+    
     @OneToMany(mappedBy = "instituicao")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Usuario> usuarios;

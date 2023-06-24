@@ -1,32 +1,33 @@
 package com.complaint5.academic_events.configs;
 
-import com.complaint5.academic_events.security.JWTutil;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.complaint5.academic_events.security.JWTAuthenticationFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
+@EnableMethodSecurity
 public class WebSecurityConfig {
 
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private JWTutil jwtUtil;
-    @Autowired
-    private UserDetailsService userDetailsService;
+    private final AuthenticationProvider authenticationProvider;
+    private final JWTAuthenticationFilter jwtAuthFilter;
+    
     private static final String[] MATCHERS_GET = {
         "/usuario"
     };
     private static final String[] MATCHERS_POST = {
-        "/usuario"
+        "/usuario",
+        "/usuario/login"
     };
 
     @Bean
@@ -34,23 +35,20 @@ public class WebSecurityConfig {
 
         http.csrf(csrf -> csrf.disable()).cors(cors -> cors.disable());
 
-        AuthenticationManagerBuilder authenticationManagerBuilder = http
-                .getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.userDetailsService(this.userDetailsService)
-                .passwordEncoder(this.bCryptPasswordEncoder());
-        this.authenticationManager = authenticationManagerBuilder.build();
-
         http.authorizeHttpRequests((authorizeConfig) -> {
             authorizeConfig.requestMatchers(HttpMethod.POST, MATCHERS_POST).permitAll();
             authorizeConfig.requestMatchers(HttpMethod.GET, MATCHERS_GET).permitAll();
             authorizeConfig.requestMatchers("/logout").permitAll();
             authorizeConfig.anyRequest().authenticated();
         });
-        return http.build();
-    }
 
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
+        http.sessionManagement((sessionManagement) -> {
+            sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        });
+
+        http.authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
     }
 }
